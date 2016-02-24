@@ -34,6 +34,10 @@ qplot(steps,xlab="Total Steps Per Day",ylab="Frequency",
 stepsMean <- round(mean(steps))
 #  Calculate the mean value
 stepsMed <- median(steps)
+#  Report mean value
+stepsMean
+#  Report median value
+stepsMed
 ```
 The mean total number of steps taken per day is **`r stepsMean `**.    
 The median total number of steps taken per day is **`r stepsMed `**.  
@@ -49,6 +53,8 @@ ggplot(avgSteps, aes(interval, steps)) + geom_line() + xlab("Time Interval") +
       ylab("Average Steps") + ggtitle("Average Daily Activity Pattern") 
 #  Find the maximum number of steps
 max <- avgSteps[which(avgSteps$steps == max(avgSteps$steps)), 1]
+#Report max value
+max
 ```
 The 5-minute interval with the maximum number of average steps taken across all days in dataset is **`r max`**.
 
@@ -56,6 +62,8 @@ The 5-minute interval with the maximum number of average steps taken across all 
 ```{r}
 #  count the NAs
 countNAs <- sum(is.na(data$steps))
+# Report the total missing value
+countNAs
 ```
 Total number of missing values in dataset is **`r countNAs`**. 
 ```{r}
@@ -71,6 +79,10 @@ qplot(totalSteps, binwidth = max(totalSteps/10), xlab = "Total Steps Per Day",
 #  Median and mean
 totalMed <- format(median(totalSteps),scientific = FALSE)
 totalMean <- format(mean(totalSteps),scientific = FALSE)
+#  Report the median
+totalMed
+#  Report the mean
+totalMean
 ```
 The mean total number of steps taken per day is **`r totalMean`**, while the previews mean is **`r stepsMean`**.  
 The median total number of steps taken per day is **`r totalMed`**, while the previews median is **`r stepsMed`**.  
@@ -89,6 +101,7 @@ dataFinal <- aggregate(dataNew$steps,list(Interval = dataNew$interval, Weektype 
 library(lattice)
 xyplot(x ~ Interval | Weektype, dataFinal, layout=c(1,2), type = "l", ylab = "Number of Steps")
 ```
+  
 Difference between weekdays and weekends:   
 1. the peaks of weedays and weekends apear at the similar period(around 9am), but the peak of weekdays is much higher.  
 2. step activity of weekdays tends to be smoother compared to the weekend  

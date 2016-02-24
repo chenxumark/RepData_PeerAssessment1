@@ -36,6 +36,21 @@ qplot(steps,xlab="Total Steps Per Day",ylab="Frequency",
 stepsMean <- round(mean(steps))
 #  Calculate the mean value
 stepsMed <- median(steps)
+#  Report mean value
+stepsMean
+```
+
+```
+## [1] 9354
+```
+
+```r
+#  Report median value
+stepsMed
+```
+
+```
+## [1] 10395
 ```
 The mean total number of steps taken per day is **9354**.    
 The median total number of steps taken per day is **10395**.  
@@ -57,6 +72,12 @@ ggplot(avgSteps, aes(interval, steps)) + geom_line() + xlab("Time Interval") +
 ```r
 #  Find the maximum number of steps
 max <- avgSteps[which(avgSteps$steps == max(avgSteps$steps)), 1]
+#Report max value
+max
+```
+
+```
+## [1] 835
 ```
 The 5-minute interval with the maximum number of average steps taken across all days in dataset is **835**.
 
@@ -65,6 +86,12 @@ The 5-minute interval with the maximum number of average steps taken across all 
 ```r
 #  count the NAs
 countNAs <- sum(is.na(data$steps))
+# Report the total missing value
+countNAs
+```
+
+```
+## [1] 2304
 ```
 Total number of missing values in dataset is **2304**. 
 
@@ -86,6 +113,21 @@ qplot(totalSteps, binwidth = max(totalSteps/10), xlab = "Total Steps Per Day",
 #  Median and mean
 totalMed <- format(median(totalSteps),scientific = FALSE)
 totalMean <- format(mean(totalSteps),scientific = FALSE)
+#  Report the median
+totalMed
+```
+
+```
+## [1] "10766.19"
+```
+
+```r
+#  Report the mean
+totalMean
+```
+
+```
+## [1] "10766.19"
 ```
 The mean total number of steps taken per day is **10766.19**, while the previews mean is **9354**.  
 The median total number of steps taken per day is **10766.19**, while the previews median is **10395**.  
@@ -114,6 +156,7 @@ xyplot(x ~ Interval | Weektype, dataFinal, layout=c(1,2), type = "l", ylab = "Nu
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)\
+  
 Difference between weekdays and weekends:   
 1. the peaks of weedays and weekends apear at the similar period(around 9am), but the peak of weekdays is much higher.  
 2. step activity of weekdays tends to be smoother compared to the weekend  
