@@ -1,14 +1,10 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
 
-```{r}
+
+```r
 #  Check if the csv file exists and unzip the original file
 if(file.exists("activity.csv")==FALSE){
   unzip("activity.zip")
@@ -22,7 +18,8 @@ data <- transform(rawData, date = as.Date(rawData$date,
 
 ## What is mean total number of steps taken per day?
 
-```{r}
+
+```r
 #  Load the ggplot2 package
 library(ggplot2)
 #  Calculate the the total numer of steps per day
@@ -30,35 +27,48 @@ steps <- tapply(data$steps, data$date, sum, na.rm = TRUE)
 #  Make a histogram of the total number of steps taken each day
 qplot(steps,xlab="Total Steps Per Day",ylab="Frequency", 
       main= "Total Number of Steps Taken per Day", binwidth = max(steps/10))
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)\
+
+```r
 #  Calculate the mean value
 stepsMean <- round(mean(steps))
 #  Calculate the mean value
 stepsMed <- median(steps)
 ```
-The mean total number of steps taken per day is **`r stepsMean `**.    
-The median total number of steps taken per day is **`r stepsMed `**.  
+The mean total number of steps taken per day is **9354**.    
+The median total number of steps taken per day is **10395**.  
 
 ## What is the average daily activity pattern?
 
-```{r}
+
+```r
 #  Calculate the average number of steps
 avgSteps <- aggregate(list(steps=data$steps), list(interval = data$interval), 
                       mean, na.rm = TRUE)
 #  Make a time series plot
 ggplot(avgSteps, aes(interval, steps)) + geom_line() + xlab("Time Interval") +
       ylab("Average Steps") + ggtitle("Average Daily Activity Pattern") 
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)\
+
+```r
 #  Find the maximum number of steps
 max <- avgSteps[which(avgSteps$steps == max(avgSteps$steps)), 1]
 ```
-The 5-minute interval with the maximum number of average steps taken across all days in dataset is **`r max`**.
+The 5-minute interval with the maximum number of average steps taken across all days in dataset is **835**.
 
 ## Imputing missing values
-```{r}
+
+```r
 #  count the NAs
 countNAs <- sum(is.na(data$steps))
 ```
-Total number of missing values in dataset is **`r countNAs`**. 
-```{r}
+Total number of missing values in dataset is **2304**. 
+
+```r
 #  Create a new dataset
 dataNew <- data
 #  Devise mean value per interval for filling in all of the missing values in the dataset
@@ -68,18 +78,31 @@ dataNew$steps[positionNA] <- avgSteps[match(dataNew$interval,avgSteps$interval)[
 totalSteps <- tapply(dataNew$steps,dataNew$date,sum)
 qplot(totalSteps, binwidth = max(totalSteps/10), xlab = "Total Steps Per Day",
       ylab = "Frequency", main = "New Total Number of Steps Taken Each Day")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)\
+
+```r
 #  Median and mean
 totalMed <- format(median(totalSteps),scientific = FALSE)
 totalMean <- format(mean(totalSteps),scientific = FALSE)
 ```
-The mean total number of steps taken per day is **`r totalMean`**, while the previews mean is **`r stepsMean`**.  
-The median total number of steps taken per day is **`r totalMed`**, while the previews median is **`r stepsMed`**.  
+The mean total number of steps taken per day is **10766.19**, while the previews mean is **9354**.  
+The median total number of steps taken per day is **10766.19**, while the previews median is **10395**.  
 The two estimates produced the different value of mean and median. The reason mainly came from the imputted/filled missing values, which resulted in the larger values in the second estimate.   
 
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 #  Set the Languague as English(for non-English OS) 
 Sys.setlocale("LC_TIME", "English")      
+```
+
+```
+## [1] "English_United States.1252"
+```
+
+```r
 #  Define weekdays
 wkdy <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 dataNew$WD = ifelse(weekdays(dataNew$date) %in% wkdy, "weekday", "weekend")
@@ -89,6 +112,8 @@ dataFinal <- aggregate(dataNew$steps,list(Interval = dataNew$interval, Weektype 
 library(lattice)
 xyplot(x ~ Interval | Weektype, dataFinal, layout=c(1,2), type = "l", ylab = "Number of Steps")
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png)\
 Difference between weekdays and weekends:   
 1. the peaks of weedays and weekends apear at the similar period(around 9am), but the peak of weekdays is much higher.  
 2. step activity of weekdays tends to be smoother compared to the weekend  
